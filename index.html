@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport"
+					content="width=device-width, initial-scale=1.0" />
+		<title>War</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"
+						async></script>
+	</head>
+
+	<body>
+		<div class="game-container">
+			<h1 class="title">WAR</h1>
+			<button id="startButton">Start</button>
+			<div class="table-top"></div>
+			<div class="player-container">
+				<div class="hand"
+						 id="playerHand">
+					<button class="card hidden"><img src="#" /></button>
+					<button class="card hidden"><img src="#" /></button>
+					<button class="card hidden"><img src="#" /></button>
+					<button class="card hidden"><img src="#" /></button>
+					<button class="card hidden"><img src="#" /></button>
+				</div>
+			</div>
+			<div class="table">
+				<button class="player-played-card hidden"
+								id="playerPlayedCard"><img src="#" /></button>
+			</div>
+		</div>
+
+		<script type="module"
+						src="/src/main.ts"
+						defer></script>
+
+
+	</body>
+
+</html>

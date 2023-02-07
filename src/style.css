@@ -1,0 +1,203 @@
+body {
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	min-width: 500px;
+	margin: 0;
+	padding: 0;
+	background: rgba(57, 114, 155, 0.6);
+	/* background: radial-gradient(circle, rgba(107, 142, 255, 1) 0%, rgba(48, 63, 115, 1) 100%); */
+	overflow: hidden;
+}
+
+.game-container {
+	position: relative;
+	overflow: hidden;
+	margin: auto;
+	width: 100%;
+	height: 100%;
+	min-width: 500px;
+	min-height: 600px;
+	max-width: 1500px;
+	max-height: 800px;
+}
+
+canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+
+.title {
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	font: bold 100px arial, sans-serif;
+	background-color: rgb(73, 96, 113);
+	color: transparent;
+	text-shadow: 1.5px 1.5px 2px rgba(157, 214, 255, 0.5);
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+}
+
+.table-top {
+	pointer-events: none;
+	border-radius: 2rem;
+	perspective: 751px;
+	transform-style: preserve-3d;
+	perspective-origin: 50% 30%;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	min-width: 500px;
+	height: 600px;
+	background-color: hsl(2, 57%, 40%);
+	background-image: repeating-linear-gradient(
+			transparent,
+			transparent 50px,
+			rgba(0, 0, 0, 0.4) 50px,
+			rgba(0, 0, 0, 0.4) 53px,
+			transparent 53px,
+			transparent 63px,
+			rgba(0, 0, 0, 0.4) 63px,
+			rgba(0, 0, 0, 0.4) 66px,
+			transparent 66px,
+			transparent 116px,
+			rgba(0, 0, 0, 0.5) 116px,
+			rgba(0, 0, 0, 0.5) 166px,
+			rgba(255, 255, 255, 0.2) 166px,
+			rgba(255, 255, 255, 0.2) 169px,
+			rgba(0, 0, 0, 0.5) 169px,
+			rgba(0, 0, 0, 0.5) 179px,
+			rgba(255, 255, 255, 0.2) 179px,
+			rgba(255, 255, 255, 0.2) 182px,
+			rgba(0, 0, 0, 0.5) 182px,
+			rgba(0, 0, 0, 0.5) 232px,
+			transparent 232px
+		),
+		repeating-linear-gradient(
+			270deg,
+			transparent,
+			transparent 50px,
+			rgba(0, 0, 0, 0.4) 50px,
+			rgba(0, 0, 0, 0.4) 53px,
+			transparent 53px,
+			transparent 63px,
+			rgba(0, 0, 0, 0.4) 63px,
+			rgba(0, 0, 0, 0.4) 66px,
+			transparent 66px,
+			transparent 116px,
+			rgba(0, 0, 0, 0.5) 116px,
+			rgba(0, 0, 0, 0.5) 166px,
+			rgba(255, 255, 255, 0.2) 166px,
+			rgba(255, 255, 255, 0.2) 169px,
+			rgba(0, 0, 0, 0.5) 169px,
+			rgba(0, 0, 0, 0.5) 179px,
+			rgba(255, 255, 255, 0.2) 179px,
+			rgba(255, 255, 255, 0.2) 182px,
+			rgba(0, 0, 0, 0.5) 182px,
+			rgba(0, 0, 0, 0.5) 232px,
+			transparent 232px
+		),
+		repeating-linear-gradient(
+			125deg,
+			transparent,
+			transparent 2px,
+			rgba(0, 0, 0, 0.2) 2px,
+			rgba(0, 0, 0, 0.2) 3px,
+			transparent 3px,
+			transparent 5px,
+			rgba(0, 0, 0, 0.2) 5px
+		);
+	transform: perspective(200px) rotateX(20deg) scale(0.75) translateY(-120px);
+	-o-transform: perspective(200px) rotateX(20deg) scale(0.75) translateY(-120px);
+	-ms-transform: perspective(200px) rotateX(20deg) scale(0.75) translateY(-120px);
+	-moz-transform: perspective(200px) rotateX(20deg) scale(0.75) translateY(-120px);
+	-webkit-transform: perspective(200px) rotateX(20deg) scale(0.75) translateY(-120px);
+}
+
+.player-container {
+	display: flex;
+	justify-content: center;
+	position: absolute;
+	width: 100%;
+	bottom: 0px;
+}
+
+.hand {
+	display: flex;
+	justify-content: center;
+	padding-bottom: 2rem;
+	margin-left: 3rem;
+}
+
+.card {
+	border: 0;
+	background: white;
+	border-radius: 0.5rem;
+	margin-left: -3rem;
+	z-index: 1;
+	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
+	transition: transform ease 200ms;
+}
+
+.card:hover {
+	transform: translateY(-1rem);
+	box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+	z-index: 2;
+}
+
+.card:active {
+	transform: translateY(-1.5rem) rotateZ(5deg);
+}
+
+.card.placed {
+	box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.4);
+	position: absolute;
+	margin-top: -6rem;
+	transform: perspective(200px) rotateX(20deg) scale(0.75) translateY(-120px);
+	-o-transform: perspective(200px) rotateX(20deg) scale(0.75) translateY(-120px);
+	-ms-transform: perspective(200px) rotateX(20deg) scale(0.75) translateY(-120px);
+	-moz-transform: perspective(200px) rotateX(20deg) scale(0.75) translateY(-120px);
+	-webkit-transform: perspective(200px) rotateX(20deg) scale(0.75) translateY(-120px);
+}
+
+.card.placed:hover {
+	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
+}
+
+.card img {
+	pointer-events: none;
+	margin: 0.5rem;
+	width: calc(222px / 2);
+	height: calc(323px / 2);
+	border-radius: 0.75rem;
+}
+
+.hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.player-played-card {
+	border: 0;
+	background: white;
+	border-radius: 0.5rem;
+	margin-left: -3rem;
+	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
+	position: absolute;
+	z-index: 10;
+}
+
+.player-played-card img {
+	pointer-events: none;
+	margin: 0.5rem;
+	width: calc(222px / 2);
+	height: calc(323px / 2);
+	border-radius: 0.75rem;
+}
