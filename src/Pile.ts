@@ -46,6 +46,10 @@ class Pile {
 		}
 	}
 
+	public getCards() {
+		return this.cards.get();
+	}
+
 	public getSignal() {
 		return this.cards;
 	}

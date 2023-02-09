@@ -2,22 +2,92 @@ import Card, { RANKS, SUITS } from "./Card";
 import Pile from "./Pile";
 import "./style.css";
 
-const MAX_SHOWN_CARDS = 5 as const;
+/**
+ * Create a new deck of cards
+ * @returns the deck's pile
+ */
+function createDeck() {
+	const cards = [];
+	for (const suit of SUITS) {
+		for (const rank of RANKS) {
+			cards.push(new Card(rank, suit));
+		}
+	}
+	const pile = new Pile();
+	pile.addCards(cards);
+
+	return pile;
+}
+
+/**
+ * Given a deck, deal the cards into the given number of hands
+ * @param deck the deck to deal from
+ * @param count the number of hands to deal
+ * @returns an array of hands
+ */
+function dealCards(deck: Pile, count: number) {
+	const chunkSize = Math.ceil(deck.cardCount() / count);
+	const chunks: Card[][] = [];
+	for (let i = 0; i < count; i++) {
+		chunks.push(
+			deck
+				.getSignal()
+				.get()
+				.slice(i * chunkSize, (i + 1) * chunkSize),
+		);
+	}
+
+	return chunks;
+}
+
+const deck = createDeck();
+deck.shuffle();
+const [playerHand, computerHand] = dealCards(deck, 2);
+
+const playerPile = new Pile();
+const computerPile = new Pile();
+
+playerPile.addCards(playerHand);
+computerPile.addCards(computerHand);
+
+const playerCard = document.getElementById("player_card");
+const playerCardImage = playerCard?.firstElementChild as HTMLImageElement;
+
+playerCardImage.src = playerPile.getCards()[0].getImage();
+
+playerPile.getSignal().subscribe((cards) => {
+	playerCardImage.src = cards[0].getImage();
+});
+
+playerCard?.classList.remove("hidden");
+playerCard?.classList.add("card_input");
 
 let isMovingCard = false;
 document.getElementById("player_cards")?.addEventListener("click", (e) => {
 	if ((e.target as HTMLDivElement).classList.contains("card") && !isMovingCard) {
-		console.log("clicked");
 		isMovingCard = true;
+
 		const userCard = e.target as HTMLDivElement;
 		const tableUserCard = document.getElementById("card_player_table") as HTMLDivElement;
 		const userCardBox = userCard.getBoundingClientRect();
-		const tableCardBox = tableUserCard.getBoundingClientRect();
+		const tableUserCardBox = tableUserCard.getBoundingClientRect();
 
 		tableUserCard.style.transform = `translate(calc(${
-			userCardBox.right - tableCardBox.right + 5
-		}px - 0.25rem), calc(${userCardBox.top - tableCardBox.top}px + 0.1rem))`;
+			userCardBox.right - tableUserCardBox.right + 5
+		}px - 0.25rem), calc(${userCardBox.top - tableUserCardBox.top}px + 0.1rem))`;
 		(tableUserCard.firstChild as HTMLImageElement).src = (
+			userCard.firstChild as HTMLImageElement
+		).src;
+
+		const oppCard = document.getElementById("opp_card") as HTMLDivElement;
+		const tableOppCard = document.getElementById("card_opponent_table") as HTMLDivElement;
+		const oppCardBox = oppCard.getBoundingClientRect();
+		const tableOppCardBox = tableOppCard.getBoundingClientRect();
+
+		tableOppCard.style.transform = `translate(calc(${
+			oppCardBox.right - tableOppCardBox.right + 5
+		}px - 0.25rem), calc(${oppCardBox.top - tableOppCardBox.top}px + 0.1rem))`;
+		(tableOppCard.firstChild as HTMLImageElement).src = (
 			userCard.firstChild as HTMLImageElement
 		).src;
 
@@ -25,19 +95,32 @@ document.getElementById("player_cards")?.addEventListener("click", (e) => {
 			tableUserCard.classList.remove("hidden");
 			tableUserCard.style.transform = "translate(0, 0)";
 
+			tableOppCard.classList.remove("hidden");
+			tableOppCard.style.transform = "translate(0, 0)";
+
+			(tableOppCard.firstElementChild as HTMLImageElement).src = (
+				userCard.firstElementChild as HTMLImageElement
+			).src;
+
 			(tableUserCard.firstElementChild as HTMLImageElement).src = (
 				userCard.firstElementChild as HTMLImageElement
 			).src;
 
 			tableUserCard.classList.add("transition");
 
+			tableOppCard.classList.add("transition");
+
 			setTimeout(() => {
 				setTimeout(() => {
 					tableUserCard.style.transform = "translate(1000px, 0)";
 					tableUserCard.classList.add("hidden");
 
+					tableOppCard.style.transform = "translate(1000px, 0)";
+					tableOppCard.classList.add("hidden");
+
 					setTimeout(() => {
 						tableUserCard.style.transform = "translate(0, 0)";
+						tableOppCard.style.transform = "translate(0, 0)";
 						isMovingCard = false;
 					}, 200);
 				}, 200);

@@ -57,10 +57,6 @@ body {
 	border-radius: 0.5rem;
 }
 
-.card_input {
-	transition: all ease 100ms;
-}
-
 .card_input:hover {
 	transform: translateY(-0.25rem) translateX(-0.25rem) scale(1.05);
 	box-shadow: 0.75rem 0.75rem 0 0 rgb(21, 59, 11);
