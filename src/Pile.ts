@@ -1,23 +1,53 @@
 import Card from "./Card";
+import createSignal from "./Signal";
 
 class Pile {
-	private cards: Card[];
+	private cards: ReturnType<typeof createSignal<Card[]>>;
 
-	constructor(cards: Card[]) {
-		this.cards = cards;
+	constructor() {
+		this.cards = createSignal([] as Card[]);
 	}
 
 	public moveCard(card: Card, pile: Pile) {
 		pile.addCard(card);
-		this.cards = this.cards.filter((c) => c !== card);
+		this.removeCard(card);
 	}
 
-	public addCard(card: Card) {
-		this.cards.push(card);
+	public shuffle() {
+		for (let i = this.cards.get().length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[this.cards.get()[i], this.cards.get()[j]] = [this.cards.get()[j], this.cards.get()[i]];
+		}
+	}
+
+	private addCard(card: Card) {
+		this.cards.set([...this.cards.get(), card]);
+	}
+
+	private removeCard(card: Card) {
+		this.cards.set(this.cards.get().filter((c) => c !== card));
+	}
+
+	public addCards(cards: Card[]) {
+		this.cards.set([...this.cards.get(), ...cards]);
 	}
 
 	public cardAt(index: number) {
-		return this.cards[index];
+		return this.cards.get()[index];
+	}
+
+	public cardCount() {
+		return this.cards.get().length;
+	}
+
+	public printCards() {
+		for (const card of this.cards.get()) {
+			console.log(card);
+		}
+	}
+
+	public getSignal() {
+		return this.cards;
 	}
 }
 

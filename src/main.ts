@@ -2,35 +2,179 @@ import Card, { RANKS, SUITS } from "./Card";
 import Pile from "./Pile";
 import "./style.css";
 
-function createDeck() {
-	const cards = [];
-	for (const suit of SUITS) {
-		for (const rank of RANKS) {
-			cards.push(new Card(rank, suit));
-		}
+const MAX_SHOWN_CARDS = 5 as const;
+
+let isMovingCard = false;
+document.getElementById("player_cards")?.addEventListener("click", (e) => {
+	if ((e.target as HTMLDivElement).classList.contains("card") && !isMovingCard) {
+		console.log("clicked");
+		isMovingCard = true;
+		const userCard = e.target as HTMLDivElement;
+		const tableUserCard = document.getElementById("card_player_table") as HTMLDivElement;
+		const userCardBox = userCard.getBoundingClientRect();
+		const tableCardBox = tableUserCard.getBoundingClientRect();
+
+		tableUserCard.style.transform = `translate(calc(${
+			userCardBox.right - tableCardBox.right + 5
+		}px - 0.25rem), calc(${userCardBox.top - tableCardBox.top}px + 0.1rem))`;
+		(tableUserCard.firstChild as HTMLImageElement).src = (
+			userCard.firstChild as HTMLImageElement
+		).src;
+
+		setTimeout(() => {
+			tableUserCard.classList.remove("hidden");
+			tableUserCard.style.transform = "translate(0, 0)";
+
+			(tableUserCard.firstElementChild as HTMLImageElement).src = (
+				userCard.firstElementChild as HTMLImageElement
+			).src;
+
+			tableUserCard.classList.add("transition");
+
+			setTimeout(() => {
+				setTimeout(() => {
+					tableUserCard.style.transform = "translate(1000px, 0)";
+					tableUserCard.classList.add("hidden");
+
+					setTimeout(() => {
+						tableUserCard.style.transform = "translate(0, 0)";
+						isMovingCard = false;
+					}, 200);
+				}, 200);
+			}, 500);
+		}, 100);
 	}
-	return new Pile(cards);
-}
+});
 
-function dealCards(deck: Pile, player: Pile, computer: Pile) {
-	const cardCount = SUITS.length * RANKS.length;
-	for (let i = 0; i < cardCount; i++) {
-		const card = deck.cardAt(i);
-		if (i % 2 === 0) {
-			deck.moveCard(card, player);
-		} else {
-			deck.moveCard(card, computer);
-		}
-	}
-}
+// const deck = createDeck();
 
-const deck = createDeck();
-const player = new Pile([]);
-const computer = new Pile([]);
-dealCards(deck, player, computer);
+// deck.shuffle();
+// deck.shuffle();
 
-document.getElementById("playerHand")?.addEventListener("click", (e) => {});
+// const playerPile = new Pile();
+// const computerPile = new Pile();
+// const tablePile = new Pile();
+// const [playerCards, computerCards] = dealCards(deck, 2);
 
-document.getElementById("startButton")?.addEventListener("click", () => {});
+// playerPile.getSignal().subscribe((cards) => {
+// 	for (let i = 0; i < MAX_SHOWN_CARDS; i++) {
+// 		(document.getElementById(`card_${i}`)?.firstChild as HTMLImageElement).src =
+// 			cards[i].getImage();
+// 	}
+// });
 
-//  Have move function to move cards from deck to deck. Card can only be in one deck at a time. Starting deck, player deck, computer deck, pile deck. Instead of deck, rename to pile of cards.
+// for (let i = 0; i < MAX_SHOWN_CARDS; i++) {
+// 	document.getElementById(`card_${i}`)!.addEventListener("click", () => {
+// 		playCard(i);
+// 	});
+// }
+
+// playerPile.addCards(playerCards);
+// computerPile.addCards(computerCards);
+
+// document.getElementById("startButton")?.addEventListener("click", () => {
+// 	playCard(0);
+// });
+
+// /**
+//  * Create a new deck of cards
+//  * @returns the deck's pile
+//  */
+// function createDeck() {
+// 	const cards = [];
+// 	for (const suit of SUITS) {
+// 		for (const rank of RANKS) {
+// 			cards.push(new Card(rank, suit));
+// 		}
+// 	}
+// 	const pile = new Pile();
+// 	pile.addCards(cards);
+
+// 	return pile;
+// }
+
+// /**
+//  * Given a deck, deal the cards into the given number of hands
+//  * @param deck the deck to deal from
+//  * @param count the number of hands to deal
+//  * @returns an array of hands
+//  */
+// function dealCards(deck: Pile, count: number) {
+// 	const chunkSize = Math.ceil(deck.cardCount() / count);
+// 	const chunks: Card[][] = [];
+// 	for (let i = 0; i < count; i++) {
+// 		chunks.push(
+// 			deck
+// 				.getSignal()
+// 				.get()
+// 				.slice(i * chunkSize, (i + 1) * chunkSize),
+// 		);
+// 	}
+// 	console.log(chunks);
+
+// 	return chunks;
+// }
+
+// function animateCardOut(card: HTMLDivElement, callback: () => void) {
+// 	setTimeout(() => {
+// 		card.classList.add("played-card-out");
+// 		setTimeout(() => callback(), 50);
+// 	}, 800);
+// }
+
+// let playingCard = false;
+// /**
+//  * Given an index, take that index from the player's deck to play against the
+//  * first card from the computer's deck
+//  * @param i the index of the card to play
+//  */
+// function playCard(i: number) {
+// 	if (i < 0 || i >= playerPile.cardCount()) {
+// 		return;
+// 	}
+// 	if (playingCard) {
+// 		return;
+// 	}
+// 	playingCard = true;
+// 	const playerCard = playerPile.cardAt(i);
+// 	const computerCard = computerPile.cardAt(0);
+
+// 	// Move the cards to the table
+// 	playerPile.moveCard(playerCard, tablePile);
+// 	const tableCard = document.getElementById("playerPlayedCard");
+// 	(tableCard!.firstChild! as HTMLImageElement).src = playerCard.getImage();
+// 	(tableCard! as HTMLDivElement).classList.remove("hidden");
+// 	(tableCard! as HTMLDivElement).classList.add("played-card");
+// 	computerPile.moveCard(computerCard, tablePile);
+
+// 	// Compare the cards on the table
+// 	if (playerCard.isHigherThan(computerCard)) {
+// 		// Player wins the round
+// 		tablePile.moveCard(playerCard, playerPile);
+// 		tablePile.moveCard(computerCard, playerPile);
+// 		console.log(
+// 			`Player uses ${playerCard.getRank()} of ${playerCard.getSuit()} to beat ${computerCard.getRank()} of ${computerCard.getSuit()}`,
+// 		);
+// 		console.log(`Player card count: ${playerPile.cardCount()}`);
+// 	} else if (playerCard.isLowerThan(computerCard)) {
+// 		// Computer wins the round
+// 		tablePile.moveCard(playerCard, computerPile);
+// 		tablePile.moveCard(computerCard, computerPile);
+// 		console.log(
+// 			`Computer uses ${computerCard.getRank()} of ${computerCard.getSuit()} to beat ${playerCard.getRank()} of ${playerCard.getSuit()}`,
+// 		);
+// 		console.log(`Computer card count: ${computerPile.cardCount()}`);
+// 	} else {
+// 		// Cards are equal
+// 		playCard(i + 1);
+// 	}
+
+// 	animateCardOut(tableCard! as HTMLDivElement, () => {
+// 		(tableCard! as HTMLDivElement).classList.add("hidden");
+// 		setTimeout(() => {
+// 			(tableCard! as HTMLDivElement).classList.remove("played-card");
+// 			(tableCard! as HTMLDivElement).classList.remove("played-card-out");
+// 			playingCard = false;
+// 		}, 150);
+// 	});
+// }

@@ -50,6 +50,10 @@ class Card {
 	public isEqualTo(card: Card) {
 		return RANKS.indexOf(this.rank) === RANKS.indexOf(card.getRank());
 	}
+
+	public toString() {
+		return `${this.rank} of ${this.suit}`;
+	}
 }
 
 export default Card;

@@ -6,36 +6,41 @@
 		<meta name="viewport"
 					content="width=device-width, initial-scale=1.0" />
 		<title>War</title>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"
-						async></script>
 	</head>
 
 	<body>
-		<div class="game-container">
-			<h1 class="title">WAR</h1>
-			<button id="startButton">Start</button>
-			<div class="table-top"></div>
-			<div class="player-container">
-				<div class="hand"
-						 id="playerHand">
-					<button class="card hidden"><img src="#" /></button>
-					<button class="card hidden"><img src="#" /></button>
-					<button class="card hidden"><img src="#" /></button>
-					<button class="card hidden"><img src="#" /></button>
-					<button class="card hidden"><img src="#" /></button>
+
+		<div class="game_container">
+			<div class="opponent">
+				<div class="card">
+					<img src="./img/back.png"
+							 alt="card" />
 				</div>
 			</div>
 			<div class="table">
-				<button class="player-played-card hidden"
-								id="playerPlayedCard"><img src="#" /></button>
+				<div class="card"
+						 id="card_opponent_table">
+					<img src="./img/back.png"
+							 alt="card" />
+				</div>
+				<div id="card_player_table"
+						 class="card hidden">
+					<img src="./img/back.png"
+							 alt="card" />
+				</div>
+			</div>
+			<div id="player_cards"
+					 class="player">
+				<div class="card card_input">
+					<img src="./img/8_of_hearts.png"
+							 alt="card" />
+				</div>
 			</div>
 		</div>
 
 		<script type="module"
 						src="/src/main.ts"
 						defer></script>
-
-
 	</body>
 
 </html>

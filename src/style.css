@@ -3,12 +3,80 @@ body {
 	left: 0;
 	width: 100vw;
 	height: 100vh;
-	min-width: 500px;
 	margin: 0;
 	padding: 0;
-	background: rgba(57, 114, 155, 0.6);
-	/* background: radial-gradient(circle, rgba(107, 142, 255, 1) 0%, rgba(48, 63, 115, 1) 100%); */
 	overflow: hidden;
+	background: rgb(85, 147, 64);
+	background: radial-gradient(circle, rgba(85, 147, 64, 1) 0%, rgba(29, 78, 15, 1) 100%);
+}
+
+.game_container {
+	position: relative;
+	overflow: hidden;
+	margin: auto;
+	width: 100%;
+	height: 100%;
+	min-width: 500px;
+	min-height: 600px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: stretch;
+	align-items: stretch;
+}
+
+.opponent,
+.table,
+.player {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.card {
+	width: calc(140px + 1rem);
+	height: calc(200px + 1rem);
+	margin: 0.5rem;
+	overflow: hidden;
+	background-color: white;
+	border-radius: 0.5rem;
+	box-shadow: 0.5rem 0.5rem 0 0 rgb(17, 49, 9);
+	-webkit-user-select: none; /* Chrome all / Safari all */
+	-moz-user-select: none; /* Firefox all */
+	-ms-user-select: none; /* IE 10+ */
+	user-select: none;
+}
+
+.card img {
+	pointer-events: none;
+	width: 140px;
+	height: 200px;
+	padding: 0;
+	margin: 0.5rem;
+	border-radius: 0.5rem;
+}
+
+.card_input {
+	transition: all ease 100ms;
+}
+
+.card_input:hover {
+	transform: translateY(-0.25rem) translateX(-0.25rem) scale(1.05);
+	box-shadow: 0.75rem 0.75rem 0 0 rgb(21, 59, 11);
+}
+
+.card_input:active {
+	transform: translateY(0rem) translateX(0rem) scale(1);
+	box-shadow: 0.5rem 0.5rem 0 0 rgb(17, 49, 9);
+}
+
+.transition {
+	transition: all ease 200ms;
+}
+
+.user_card_position {
+	transition: all ease 500ms;
 }
 
 .game-container {
@@ -136,7 +204,7 @@ canvas {
 	margin-left: 3rem;
 }
 
-.card {
+.card2 {
 	border: 0;
 	background: white;
 	border-radius: 0.5rem;
@@ -146,17 +214,17 @@ canvas {
 	transition: transform ease 200ms;
 }
 
-.card:hover {
+.card2:hover {
 	transform: translateY(-1rem);
 	box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
 	z-index: 2;
 }
 
-.card:active {
+.card2:active {
 	transform: translateY(-1.5rem) rotateZ(5deg);
 }
 
-.card.placed {
+.card2.placed {
 	box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.4);
 	position: absolute;
 	margin-top: -6rem;
@@ -167,16 +235,15 @@ canvas {
 	-webkit-transform: perspective(200px) rotateX(20deg) scale(0.75) translateY(-120px);
 }
 
-.card.placed:hover {
+.card2.placed:hover {
 	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
 }
 
-.card img {
+.card2 img {
 	pointer-events: none;
 	margin: 0.5rem;
 	width: calc(222px / 2);
 	height: calc(323px / 2);
-	border-radius: 0.75rem;
 }
 
 .hidden {
@@ -186,12 +253,15 @@ canvas {
 
 .player-played-card {
 	border: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	background: white;
 	border-radius: 0.5rem;
-	margin-left: -3rem;
-	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
-	position: absolute;
-	z-index: 10;
+	width: calc(222px / 2);
+	height: calc(323px / 2);
+	padding: 1rem;
+	transition: all ease 200ms;
 }
 
 .player-played-card img {
@@ -200,4 +270,42 @@ canvas {
 	width: calc(222px / 2);
 	height: calc(323px / 2);
 	border-radius: 0.75rem;
+}
+
+.played-card {
+	transform: perspective(200px) rotateX(20deg) translateY(-250px);
+}
+
+.computer-cards {
+	display: flex;
+	justify-content: center;
+	position: absolute;
+	width: 100%;
+	bottom: 0px;
+}
+
+.comp-card {
+	overflow: hidden;
+	border: 0;
+	background: white;
+	border-radius: 0.5rem;
+	margin-left: -1.5rem;
+	margin-right: -1.5rem;
+	z-index: 1;
+	width: calc(222px / 2);
+	height: calc(323px / 2);
+	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
+	transform: perspective(200px) translateZ(-100px) translateY(-750px);
+}
+
+.comp-card-played {
+	background: white;
+	border-radius: 0.5rem;
+	padding: 1rem;
+	transform: perspective(200px) translateZ(0px) translateY(-600px) rotateX(10deg) scale(0.4);
+}
+
+.comp-card img {
+	pointer-events: none;
+	width: 100%;
 }
