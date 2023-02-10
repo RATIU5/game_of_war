@@ -8,7 +8,8 @@ class Pile {
 		this.cards = createSignal([] as Card[]);
 	}
 
-	public moveCard(card: Card, pile: Pile) {
+	public moveCard(cardIndex: number, pile: Pile) {
+		const card = this.cardAt(cardIndex);
 		pile.addCard(card);
 		this.removeCard(card);
 	}
