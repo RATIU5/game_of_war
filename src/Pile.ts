@@ -21,7 +21,7 @@ class Pile {
 		}
 	}
 
-	private addCard(card: Card) {
+	public addCard(card: Card) {
 		this.cards.set([...this.cards.get(), card]);
 	}
 

@@ -10,6 +10,37 @@ body {
 	background: radial-gradient(circle, rgba(85, 147, 64, 1) 0%, rgba(29, 78, 15, 1) 100%);
 }
 
+#player1-hand,
+#player2-hand,
+#table-cards {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 200px;
+	margin: 10px;
+}
+
+#table-cards {
+	height: 400px;
+}
+
+img {
+	width: 100px;
+	height: 150px;
+	margin: 10px;
+}
+
+button {
+	display: block;
+	margin: 10px auto;
+	padding: 10px 20px;
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
 .game_container {
 	position: relative;
 	overflow: hidden;

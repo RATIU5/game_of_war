@@ -1,4 +1,4 @@
-export const SUITS = ["Clubs", "Diamonds", "Hearts", "Spades"] as const;
+export const SUITS = ["clubs", "diamonds", "hearts", "spades"] as const;
 export const RANKS = [
 	"2",
 	"3",
@@ -9,10 +9,10 @@ export const RANKS = [
 	"8",
 	"9",
 	"10",
-	"Jack",
-	"Queen",
-	"King",
-	"Ace",
+	"jack",
+	"queen",
+	"king",
+	"ace",
 ] as const;
 
 type Suit = typeof SUITS[number];
@@ -21,10 +21,12 @@ type Rank = typeof RANKS[number];
 class Card {
 	private readonly rank: Rank;
 	private readonly suit: Suit;
+	private owner: string;
 
 	constructor(public rankValue: Rank, public suitValue: Suit) {
 		this.rank = rankValue;
 		this.suit = suitValue;
+		this.owner = "";
 	}
 
 	public getRank() {
@@ -53,6 +55,18 @@ class Card {
 
 	public toString() {
 		return `${this.rank} of ${this.suit}`;
+	}
+
+	public setOwner(owner: string) {
+		this.owner = owner;
+	}
+
+	public getOwner() {
+		return this.owner;
+	}
+
+	public hasOwner() {
+		return this.owner !== "";
 	}
 }
 
