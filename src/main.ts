@@ -14,7 +14,7 @@ function setup() {
 	]);
 }
 
-function testCards(playerNthCard: number, computerNthCard: number) {
+function playCards(playerNthCard: number, computerNthCard: number) {
 	const pIndex = state.deck.getNthIndexByOwner(playerNthCard, "player");
 	const cIndex = state.deck.getNthIndexByOwner(computerNthCard, "computer");
 	if (pIndex === -1 || cIndex === -1) {
@@ -22,35 +22,27 @@ function testCards(playerNthCard: number, computerNthCard: number) {
 		return;
 	}
 
-	const pCard = state.deck.cardAt(pIndex);
-	const cCard = state.deck.cardAt(cIndex);
-
 	if (state.deck.cardAt(pIndex).isHigherThan(state.deck.cardAt(cIndex))) {
-		console.log(
-			`| ${pCard.getRank()} of ${pCard.getSuit()} (${pIndex}) > ${cCard.getRank()} of ${cCard.getSuit()} (${cIndex}) |`,
-		);
-
+		moveTableCards("player");
 		state.deck.cardAt(cIndex).setOwner("player");
 		state.deck.moveToEnd(cIndex);
-		console.log(
-			`| ${pCard.getRank()} of ${pCard.getSuit()} (${pIndex}) > ${cCard.getRank()} of ${cCard.getSuit()} (${cIndex}) |`,
-		);
-
 		state.deck.moveToEnd(pIndex);
 	} else if (state.deck.cardAt(pIndex).isLowerThan(state.deck.cardAt(cIndex))) {
-		console.log(
-			`| ${pCard.getRank()} of ${pCard.getSuit()} (${pIndex}) < ${cCard.getRank()} of ${cCard.getSuit()} (${cIndex}) |`,
-		);
-
+		moveTableCards("computer");
 		state.deck.cardAt(pIndex).setOwner("computer");
 		state.deck.moveToEnd(pIndex);
 		state.deck.moveToEnd(cIndex);
 	} else {
-		console.log("draw, next cards");
 		state.deck.cardAt(pIndex).setOwner("table");
 		state.deck.cardAt(cIndex).setOwner("table");
-		testCards(playerNthCard + 1, computerNthCard + 1);
+		playCards(playerNthCard + 1, computerNthCard + 1);
 	}
+}
+
+function moveTableCards(owner: string) {
+	return state.deck.getAllCardsByOwner("table").forEach((card) => {
+		card.setOwner(owner);
+	});
 }
 
 function onCardClick(nthCard: number) {
@@ -59,7 +51,7 @@ function onCardClick(nthCard: number) {
 		console.error("Computer has no cards");
 		return;
 	}
-	testCards(nthCard, 1);
+	playCards(nthCard, 1);
 }
 
 runGame(state, setup, onCardClick);

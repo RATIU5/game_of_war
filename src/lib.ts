@@ -15,14 +15,14 @@ export function runGame(state: State, setupFn: () => void, clickFn: (nthCard: nu
 	setupFn();
 
 	function renderPlayerCards() {
-		for (let i = 1; i <= TOP_FIVE; i++) {
+		for (let i = 0; i < TOP_FIVE; i++) {
 			const cardIndex = state.deck.cardWithOwnerAt("player", i);
 
 			if (cardIndex === undefined) {
 				console.error("Player has no cards");
 				return;
 			}
-			const element = document.querySelector(`#player_card_${i}`) as HTMLDivElement;
+			const element = document.querySelector(`#player_card_${i + 1}`) as HTMLDivElement;
 			const image = element.querySelector("img") as HTMLImageElement;
 			if (!image) {
 				console.error("The HTML was modified and the player card image was not found");
@@ -42,7 +42,6 @@ export function runGame(state: State, setupFn: () => void, clickFn: (nthCard: nu
 			const nthCard = parseInt(cardElement.id.slice(-1));
 			clickFn(nthCard);
 			renderPlayerCards();
-			// console.log(state.deck);
 		}
 	});
 }

@@ -35,12 +35,21 @@ class Deck {
 			if (this.cards[i].getOwner() === owner) {
 				count++;
 				if (count === nth) {
-					// console.log(`Found ${owner} at index ${i}, looking for ${nth}`);
 					return i;
 				}
 			}
 		}
 		return -1;
+	}
+
+	public getAllCardsByOwner(owner: string): Card[] {
+		const cards: Card[] = [];
+		for (let i = 0; i < this.cards.length; i++) {
+			if (this.cards[i].getOwner() === owner) {
+				cards.push(this.cards[i]);
+			}
+		}
+		return cards;
 	}
 
 	public moveToEnd(index: number): void {
