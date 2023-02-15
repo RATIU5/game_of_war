@@ -1,3 +1,0 @@
-class War {
-	constructor() {}
-}
