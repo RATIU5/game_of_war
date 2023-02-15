@@ -22,6 +22,8 @@ function playCards(playerNthCard: number, computerNthCard: number) {
 		return;
 	}
 
+	console.log(`Player plays ${state.deck.cardAt(pIndex).toString()}`);
+
 	if (state.deck.cardAt(pIndex).isHigherThan(state.deck.cardAt(cIndex))) {
 		moveTableCards("player");
 		state.deck.cardAt(cIndex).setOwner("player");
