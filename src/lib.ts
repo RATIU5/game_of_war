@@ -5,7 +5,7 @@ type State = {
 };
 
 const TOP_FIVE = 5;
-export function runGame(state: State, setupFn: () => void, clickFn: (cardIndex: number) => void) {
+export function runGame(state: State, setupFn: () => void, clickFn: (nthCard: number) => void) {
 	const playerCardsContainer = document.getElementById("player_cards");
 	if (!playerCardsContainer) {
 		console.error("The HTML was modified and the player cards container was not found");
@@ -15,7 +15,7 @@ export function runGame(state: State, setupFn: () => void, clickFn: (cardIndex: 
 	setupFn();
 
 	function renderPlayerCards() {
-		for (let i = 0; i < TOP_FIVE; i++) {
+		for (let i = 1; i <= TOP_FIVE; i++) {
 			const cardIndex = state.deck.cardWithOwnerAt("player", i);
 
 			if (cardIndex === undefined) {
@@ -23,7 +23,6 @@ export function runGame(state: State, setupFn: () => void, clickFn: (cardIndex: 
 				return;
 			}
 			const element = document.querySelector(`#player_card_${i}`) as HTMLDivElement;
-			element.dataset.index = cardIndex.toString();
 			const image = element.querySelector("img") as HTMLImageElement;
 			if (!image) {
 				console.error("The HTML was modified and the player card image was not found");
@@ -40,9 +39,10 @@ export function runGame(state: State, setupFn: () => void, clickFn: (cardIndex: 
 	playerCardsContainer.addEventListener("click", (e) => {
 		if ((e.target as HTMLDivElement).classList.contains("card")) {
 			const cardElement = e.target as HTMLDivElement;
-			const cardIndex = parseInt(cardElement.dataset.index as string);
-			clickFn(cardIndex);
+			const nthCard = parseInt(cardElement.id.slice(-1));
+			clickFn(nthCard);
 			renderPlayerCards();
+			// console.log(state.deck);
 		}
 	});
 }

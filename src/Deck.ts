@@ -29,6 +29,20 @@ class Deck {
 		return undefined;
 	}
 
+	public getNthIndexByOwner(nth: number, owner: string): number {
+		let count = 0;
+		for (let i = 0; i < this.cards.length; i++) {
+			if (this.cards[i].getOwner() === owner) {
+				count++;
+				if (count === nth) {
+					// console.log(`Found ${owner} at index ${i}, looking for ${nth}`);
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+
 	public moveToEnd(index: number): void {
 		if (index < 0 || index >= this.cards.length) {
 			console.error("Cannot move card to end of deck, index out of bounds");
