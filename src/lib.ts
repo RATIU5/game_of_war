@@ -37,7 +37,14 @@ export function runGame(state: State, setupFn: () => void, clickFn: (nthCard: nu
 	let isMovingCard = false;
 	playerCardsContainer.addEventListener("click", (e) => {
 		if (state.winner !== "") {
-			return;
+			const winner = document.getElementById("winner");
+			if (!winner) {
+				console.error("Cannot render winner, winner element is undefined");
+				return;
+			} else {
+				winner.innerText = state.winner;
+				document.getElementById("game_over")?.classList.remove("hidden");
+			}
 		}
 		if (isMovingCard) {
 			return;
