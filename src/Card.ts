@@ -1,3 +1,54 @@
+type Suit = typeof SUITS[number];
+type Rank = typeof RANKS[number];
+
+class Card {
+	private readonly rank: Rank;
+	private readonly suit: Suit;
+	private ownerIndex: number;
+
+	constructor(rank: Rank, suit: Suit, ownerIndex: number) {
+		this.rank = rank;
+		this.suit = suit;
+		this.ownerIndex = ownerIndex;
+	}
+
+	public getRank(): Rank {
+		return this.rank;
+	}
+
+	public getSuit(): Suit {
+		return this.suit;
+	}
+
+	public getImage(): string {
+		return `/img/${this.rank.toLowerCase()}_of_${this.suit.toLowerCase()}.png`;
+	}
+
+	public isHigherThan(card: Card): boolean {
+		return RANKS.indexOf(this.rank) > RANKS.indexOf(card.getRank());
+	}
+
+	public isLowerThan(card: Card): boolean {
+		return RANKS.indexOf(this.rank) < RANKS.indexOf(card.getRank());
+	}
+
+	public isEqualTo(card: Card): boolean {
+		return RANKS.indexOf(this.rank) === RANKS.indexOf(card.getRank());
+	}
+
+	public toString(): string {
+		return `${this.rank} of ${this.suit}`;
+	}
+
+	public setOwnerIndex(ownerIndex: number): void {
+		this.ownerIndex = ownerIndex;
+	}
+
+	public getOwnerIndex(): number {
+		return this.ownerIndex;
+	}
+}
+
 export const SUITS = ["clubs", "diamonds", "hearts", "spades"] as const;
 export const RANKS = [
 	"2",
@@ -14,60 +65,4 @@ export const RANKS = [
 	"king",
 	"ace",
 ] as const;
-
-type Suit = typeof SUITS[number];
-type Rank = typeof RANKS[number];
-
-class Card {
-	private readonly rank: Rank;
-	private readonly suit: Suit;
-	private owner: string;
-
-	constructor(public rankValue: Rank, public suitValue: Suit) {
-		this.rank = rankValue;
-		this.suit = suitValue;
-		this.owner = "";
-	}
-
-	public getRank() {
-		return this.rank;
-	}
-
-	public getSuit() {
-		return this.suit;
-	}
-
-	public getImage() {
-		return `/img/${this.rank.toLowerCase()}_of_${this.suit.toLowerCase()}.png`;
-	}
-
-	public isHigherThan(card: Card) {
-		return RANKS.indexOf(this.rank) > RANKS.indexOf(card.getRank());
-	}
-
-	public isLowerThan(card: Card) {
-		return RANKS.indexOf(this.rank) < RANKS.indexOf(card.getRank());
-	}
-
-	public isEqualTo(card: Card) {
-		return RANKS.indexOf(this.rank) === RANKS.indexOf(card.getRank());
-	}
-
-	public toString() {
-		return `${this.rank} of ${this.suit}`;
-	}
-
-	public setOwner(owner: string) {
-		this.owner = owner;
-	}
-
-	public getOwner() {
-		return this.owner;
-	}
-
-	public hasOwner() {
-		return this.owner !== "";
-	}
-}
-
 export default Card;

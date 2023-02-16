@@ -2,6 +2,8 @@ import Deck from "./Deck";
 
 type State = {
 	deck: Deck;
+	playerCardCount: number;
+	computerCardCount: number;
 };
 
 const TOP_FIVE = 5;
@@ -16,7 +18,7 @@ export function runGame(state: State, setupFn: () => void, clickFn: (nthCard: nu
 
 	function renderPlayerCards() {
 		for (let i = 0; i < TOP_FIVE; i++) {
-			const cardIndex = state.deck.cardWithOwnerAt("player", i);
+			const cardIndex = state.deck.getNthIndexByOwner(i, 0);
 
 			if (cardIndex === undefined) {
 				console.error("Cannot render player cards, card index is undefined");
@@ -43,7 +45,7 @@ export function runGame(state: State, setupFn: () => void, clickFn: (nthCard: nu
 		}
 		if ((e.target as HTMLDivElement).classList.contains("card")) {
 			isMovingCard = true;
-			const oppCardImg = state.deck.cardAt(state.deck.getNthIndexByOwner(1, "computer")).getImage();
+			const oppCardImg = state.deck.cardAt(state.deck.getNthIndexByOwner(1, 1)).getImage();
 
 			const tableUserCard = document.getElementById("card_player_table") as HTMLDivElement;
 			const cardElement = e.target as HTMLDivElement;
@@ -103,6 +105,10 @@ export function runGame(state: State, setupFn: () => void, clickFn: (nthCard: nu
 
 						tableOppCard.style.transform = "translate(1000px, 0)";
 						tableOppCard.classList.add("hidden");
+
+						document.getElementById(
+							"score",
+						)!.innerHTML = `User: ${state.playerCardCount} Computer: ${state.computerCardCount}`;
 
 						setTimeout(() => {
 							tableUserCard.style.transform = "translate(0, 0)";

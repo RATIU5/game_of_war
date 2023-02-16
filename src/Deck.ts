@@ -2,12 +2,18 @@ import Card, { RANKS, SUITS } from "./Card";
 
 class Deck {
 	private cards: Card[];
+	private size: number;
+	private players: string[];
 
-	constructor() {
+	constructor(players: string[]) {
 		this.cards = [];
+		this.size = 0;
+		this.players = players;
+
 		for (const suit of SUITS) {
 			for (const rank of RANKS) {
-				this.cards.push(new Card(rank, suit));
+				this.cards.push(new Card(rank, suit, -1));
+				this.size++;
 			}
 		}
 	}
@@ -16,36 +22,25 @@ class Deck {
 		return this.cards[index];
 	}
 
-	public cardWithOwnerAt(owner: string, index: number = 0): number | undefined {
+	public getNthIndexByOwner(nth: number, ownerIndex: number): number {
 		let count = 0;
-		for (let i = 0; i < this.cards.length; i++) {
-			if (this.cards[i].getOwner() === owner) {
-				if (count === index) {
-					return i;
-				}
-				count++;
-			}
-		}
-		return undefined;
-	}
-
-	public getNthIndexByOwner(nth: number, owner: string): number {
-		let count = 0;
-		for (let i = 0; i < this.cards.length; i++) {
-			if (this.cards[i].getOwner() === owner) {
-				count++;
+		const size = this.size;
+		for (let i = 0; i < size; i++) {
+			if (this.cards[i].getOwnerIndex() === ownerIndex) {
 				if (count === nth) {
 					return i;
 				}
+				count++;
 			}
 		}
-		return -1;
+		return 0 - 1;
 	}
 
-	public getAllCardsByOwner(owner: string): Card[] {
+	public getAllCardsByOwner(ownerIndex: number): Card[] {
 		const cards: Card[] = [];
-		for (let i = 0; i < this.cards.length; i++) {
-			if (this.cards[i].getOwner() === owner) {
+		const size = this.size;
+		for (let i = 0; i < size; i++) {
+			if (this.cards[i].getOwnerIndex() === ownerIndex) {
 				cards.push(this.cards[i]);
 			}
 		}
@@ -53,7 +48,7 @@ class Deck {
 	}
 
 	public moveToEnd(index: number): void {
-		if (index < 0 || index >= this.cards.length) {
+		if (index < 0 || index >= this.size) {
 			console.error("Cannot move card to end of deck, index out of bounds");
 			return;
 		}
@@ -62,16 +57,24 @@ class Deck {
 	}
 
 	public shuffle(): void {
-		for (let i = this.cards.length - 1; i > 0; i--) {
+		const size = this.size;
+		for (let i = size - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
 			[this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
 		}
 	}
 
-	public deal(hands: Array<{ name: string; count: number }>): void {
-		for (let i = 0; i < this.cards.length; i++) {
-			const hand = hands[i % hands.length];
-			this.cards[i].setOwner(hand.name);
+	public deal(hands: Array<{ ownerIndex: number; count: number }>): void {
+		let cardIndex = 0;
+		for (let i = 0; i < hands.length; i++) {
+			for (let j = 0; j < hands[i].count; j++) {
+				if (cardIndex >= this.size) {
+					console.error("Cannot deal card, deck is empty");
+					return;
+				}
+				this.cards[cardIndex].setOwnerIndex(hands[i].ownerIndex);
+				cardIndex++;
+			}
 		}
 	}
 }
