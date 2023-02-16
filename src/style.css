@@ -10,6 +10,52 @@ body {
 	background: radial-gradient(circle, rgba(85, 147, 64, 1) 0%, rgba(29, 78, 15, 1) 100%);
 }
 
+.overlay {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	padding: 0;
+	margin: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(8px);
+	z-index: 10;
+}
+
+.overlay h1,
+.overlay h2 {
+	font-size: 2.5rem;
+	margin: 0.25rem;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	color: rgb(143, 161, 129);
+}
+
+.overlay h2 {
+	color: rgb(239, 227, 227);
+	font-size: 4rem;
+}
+
+.overlay a {
+	font-size: 1.5rem;
+	margin-top: 2rem;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	color: rgb(49, 176, 255);
+	text-decoration: none;
+	padding: 1rem 1.5rem;
+	border-radius: 0.75rem;
+	transition: all ease 100ms;
+}
+
+.overlay a:hover {
+	color: rgb(114, 201, 255);
+	background-color: rgb(176, 225, 255, 0.15);
+}
+
 #player1-hand,
 #player2-hand,
 #table-cards {

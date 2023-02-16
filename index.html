@@ -9,7 +9,13 @@
 	</head>
 
 	<body>
-		<div id="score">User: 25 Computer: 25</div>
+		<div id="game_over"
+				 class="hidden overlay">
+			<h1>Game Over</h1>
+			<h2 id="winner">Congratulations Player!</h2>
+			<a href="/index.html">Restart</a>
+		</div>
+		<div id="score">User: 26 Computer: 26 Total: 52</div>
 		<div class="game_container">
 			<div class="opponent">
 				<div class="card"
@@ -33,6 +39,11 @@
 			<div id="player_cards"
 					 class="player">
 				<div class="card card_input"
+						 id="player_card_0">
+					<img src="./img/8_of_hearts.png"
+							 alt="card" />
+				</div>
+				<div class="card card_input"
 						 id="player_card_1">
 					<img src="./img/8_of_hearts.png"
 							 alt="card" />
@@ -49,11 +60,6 @@
 				</div>
 				<div class="card card_input"
 						 id="player_card_4">
-					<img src="./img/8_of_hearts.png"
-							 alt="card" />
-				</div>
-				<div class="card card_input"
-						 id="player_card_5">
 					<img src="./img/8_of_hearts.png"
 							 alt="card" />
 				</div>

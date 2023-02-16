@@ -1,9 +1,11 @@
 import Deck from "./Deck";
 
 type State = {
-	deck: Deck;
-	playerCardCount: number;
-	computerCardCount: number;
+	cardDeck: Deck;
+	playerDeck: Deck;
+	computerDeck: Deck;
+	tableDeck: Deck;
+	winner: string;
 };
 
 const TOP_FIVE = 5;
@@ -18,21 +20,15 @@ export function runGame(state: State, setupFn: () => void, clickFn: (nthCard: nu
 
 	function renderPlayerCards() {
 		for (let i = 0; i < TOP_FIVE; i++) {
-			const cardIndex = state.deck.getNthIndexByOwner(i, 0);
+			const cardImage = state.playerDeck.cardAtIndex(i).getImage();
 
-			if (cardIndex === undefined) {
-				console.error("Cannot render player cards, card index is undefined");
-				return;
-			}
-			const element = document.querySelector(`#player_card_${i + 1}`) as HTMLDivElement;
+			const element = document.querySelector(`#player_card_${i}`) as HTMLDivElement;
 			const image = element.querySelector("img") as HTMLImageElement;
 			if (!image) {
 				console.error("Cannot render player cards, image is undefined");
 				return;
 			}
-			image.src = `img/${state.deck.cardAt(cardIndex).getRank()}_of_${state.deck
-				.cardAt(cardIndex)
-				.getSuit()}.png`;
+			image.src = cardImage;
 		}
 	}
 
@@ -40,12 +36,15 @@ export function runGame(state: State, setupFn: () => void, clickFn: (nthCard: nu
 
 	let isMovingCard = false;
 	playerCardsContainer.addEventListener("click", (e) => {
+		if (state.winner !== "") {
+			return;
+		}
 		if (isMovingCard) {
 			return;
 		}
 		if ((e.target as HTMLDivElement).classList.contains("card")) {
 			isMovingCard = true;
-			const oppCardImg = state.deck.cardAt(state.deck.getNthIndexByOwner(1, 1)).getImage();
+			const oppCardImg = state.computerDeck.cardAtIndex(0).getImage();
 
 			const tableUserCard = document.getElementById("card_player_table") as HTMLDivElement;
 			const cardElement = e.target as HTMLDivElement;
@@ -106,9 +105,11 @@ export function runGame(state: State, setupFn: () => void, clickFn: (nthCard: nu
 						tableOppCard.style.transform = "translate(1000px, 0)";
 						tableOppCard.classList.add("hidden");
 
-						document.getElementById(
-							"score",
-						)!.innerHTML = `User: ${state.playerCardCount} Computer: ${state.computerCardCount}`;
+						document.getElementById("score")!.innerHTML = `User: ${
+							state.playerDeck.size
+						} Computer: ${state.computerDeck.size} Total: ${
+							state.playerDeck.size + state.computerDeck.size + state.tableDeck.size
+						}`;
 
 						setTimeout(() => {
 							tableUserCard.style.transform = "translate(0, 0)";
