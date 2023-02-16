@@ -39,6 +39,11 @@ class Deck {
 		this.size++;
 	}
 
+	public pushCards(cards: Card[]): void {
+		this.cards.push(...cards);
+		this.size += cards.length;
+	}
+
 	public shuffle(): void {
 		const size = this.size;
 		for (let i = size - 1; i > 0; i--) {
@@ -47,16 +52,16 @@ class Deck {
 		}
 	}
 
-	public deal(numCards: number): Deck {
+	public deal(numCards: number): Card[] {
 		if (numCards > this.size) {
-			console.warn("Cannot deal more cards than in deck");
+			console.warn("Card:deal(): Cannot deal more cards than in deck");
 			const cards = this.cards.splice(0, this.size);
 			this.size = 0;
-			return new Deck(cards);
+			return cards;
 		}
 		const cards: Card[] = this.cards.splice(0, numCards);
 		this.size -= numCards;
-		return new Deck(cards);
+		return cards;
 	}
 }
 
