@@ -112,11 +112,9 @@ export function runGame(state: State, setupFn: () => void, clickFn: (nthCard: nu
 						tableOppCard.style.transform = "translate(1000px, 0)";
 						tableOppCard.classList.add("hidden");
 
-						document.getElementById("score")!.innerHTML = `User: ${
-							state.playerDeck.size
-						} Computer: ${state.computerDeck.size} Total: ${
-							state.playerDeck.size + state.computerDeck.size + state.tableDeck.size
-						}`;
+						document.getElementById(
+							"score",
+						)!.innerHTML = `User: ${state.playerDeck.size}<br>Computer: ${state.computerDeck.size}`;
 
 						setTimeout(() => {
 							tableUserCard.style.transform = "translate(0, 0)";
